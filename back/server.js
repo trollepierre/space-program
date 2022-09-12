@@ -35,21 +35,31 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-// Importing module
 const express_1 = __importDefault(require("express"));
 const axios_1 = __importDefault(require("axios"));
-const dotenv = __importStar(require("dotenv")); // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
+const dotenv = __importStar(require("dotenv"));
+const node_cache_1 = __importDefault(require("node-cache"));
+const myCache = new node_cache_1.default();
 dotenv.config();
 const app = (0, express_1.default)();
 const PORT = 3000;
-// Handling GET / Request
+const galileo_norad_id = `41174`;
+const observer_lat = `41.702`;
+const observer_lng = `-76.014`;
+const observer_alt = `0`;
+const seconds = `1`;
 app.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const response = yield axios_1.default.get(`https://api.n2yo.com/rest/v1/satellite/?apiKey=${process.env.API_KEY}`);
-    console.log({ response });
-    res.send('Welcome to typescript backend!');
+    let data = myCache.get(galileo_norad_id);
+    if (data == undefined) {
+        const response = yield axios_1.default.get(`https://api.n2yo.com/rest/v1/satellite/positions/${galileo_norad_id}/${observer_lat}/${observer_lng}/${observer_alt}/${seconds}/&apiKey=${process.env.API_KEY}`);
+        data = response.data;
+    }
+    else {
+        console.log('using cache');
+    }
+    myCache.set(galileo_norad_id, data);
+    res.json(data);
 }));
-// Server setup
 app.listen(PORT, () => {
-    console.log('The application is listening '
-        + 'on port http://localhost:' + PORT);
+    console.log(`The application is listening on port http://localhost:${PORT}`);
 });
