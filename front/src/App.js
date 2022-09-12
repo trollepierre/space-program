@@ -1,22 +1,31 @@
-import logo from './logo.svg';
 import './App.css';
+import React, { useState } from 'react'
 
-function App() {
+const App = () => {
+  const [satellitesPositions, setSatellitesPositions] = useState([])
+  const writeBackSatellitesPositions = async () => {
+    const response = await fetch('http://localhost:3000')
+    const { positions } = await response.json()
+    setSatellitesPositions(positions)
+  }
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <button onClick={writeBackSatellitesPositions}>Write back satellites positions</button>
+        {satellitesPositions.map(position => {
+          return (<React.Fragment key={position.satlatitude}>
+            <p>satlatitude: {position.satlatitude}</p>
+            <p>satlongitude: {position.satlongitude}</p>
+            <p>sataltitude: {position.sataltitude}</p>
+            <p>azimuth: {position.azimuth}</p>
+            <p>elevation: {position.elevation}</p>
+            <p>ra: {position.ra}</p>
+            <p>dec: {position.dec}</p>
+            <p>timestamp: {position.timestamp}</p>
+            <p>eclipsed: {position.eclipsed ? 'yes' : 'no'}</p>
+          </React.Fragment>)
+          }
+        )}
       </header>
     </div>
   );
