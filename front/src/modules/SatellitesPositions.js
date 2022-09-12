@@ -5,23 +5,24 @@ import styled from 'styled-components'
 const StyledButton = styled.button`
   text-align: center;
   font-size: 24px;
-  border-radius: 8px;
-  padding: 8px;
+  border-radius: 4px;
+  padding: 4px;
 `
 const StyledNav = styled.nav`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 32px;
-  height: 20vh;
+  margin: 16px;
+  height: 16px;
 `
 
-const StyledMain = styled.main`
-  height: 30vh;
-  font-size: 16px;
+const StyledUl = styled.ul`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
+  padding-left: 0;
 `
 
 export const SatellitesPositions = () => {
@@ -37,8 +38,8 @@ export const SatellitesPositions = () => {
     <StyledNav>
       <StyledButton onClick={writeBackSatellitesPositions}>Write back satellites positions</StyledButton>
     </StyledNav>
-    <StyledMain>
-      {satellitesPositions.map(position => <SatellitePosition key={position.satlatitude} position={position}/>)}
-    </StyledMain>
+    <StyledUl>
+      {satellitesPositions.map((position, index) => <SatellitePosition key={position.satlatitude} position={position} index={index+1}/>)}
+    </StyledUl>
   </>
 }

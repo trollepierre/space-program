@@ -15,7 +15,7 @@ const OBSERVER_LAT = `41.702`;
 const OBSERVER_LNG = `-76.014`;
 const OBSERVER_ALT = `0`;
 
-const NUMBER_OF_PERIODS_TO_KEEP = `1`;
+const NUMBER_OF_PERIODS_TO_KEEP = `10`;
 const TTL_IN_SECONDS = 60;
 
 app.get('/', async (req, res) => {
